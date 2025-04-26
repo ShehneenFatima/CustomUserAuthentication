@@ -1,28 +1,83 @@
-# Ignore compiled Python files
+# Byte-compiled Python files
 __pycache__/
 *.py[cod]
 
-# Ignore virtual environments
+# Virtual environments
 venv/
 ENV/
 env/
+.venv/
 
-# Ignore local database files
-db.sqlite3
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Ignore static files collected by Django
-/staticfiles/
-
-# Ignore IDE/editor files
+# IDE/editor files
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 
-# Ignore log files
+# Django-specific files
+# Ignore collected static files
+/staticfiles/
+/static/
+/media/
+
+# Local database files
+db.sqlite3
+*.sqlite3
+
+# Log files
 *.log
 request_logs.txt
 
-# Ignore environment variables
+# Environment variables
 .env
-# Ignore compiled Python files
-__pycache__/
-*.py[cod]
+.env.local
+.flaskenv
+
+# Caches and temporary files
+*.tmp
+.cache/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Testing and coverage
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+coverage.xml
+nosetests.xml
+
+# Translations
+*.mo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Django migrations (optional, uncomment if you want to ignore migrations)
+# /migrations/
+# !/migrations/__init__.py
+
+# Other files
+*.bak
+*.swp
+*~
