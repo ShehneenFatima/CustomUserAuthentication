@@ -1,42 +1,28 @@
-# Python
+# Ignore compiled Python files
 __pycache__/
 *.py[cod]
-*.egg
-*.egg-info/
-dist/
-build/
-.eggs/
 
-# Django stuff
-*.log
-*.pot
-*.pyc
-db.sqlite3
-media/
-staticfiles/
-.env
-
-# VS Code
-.vscode/
-
-# MacOS
-.DS_Store
-
-# Pytest cache
-.pytest_cache/
-
-# Virtual environment
+# Ignore virtual environments
 venv/
-env/
 ENV/
+env/
 
-# Coverage reports
-htmlcov/
-.coverage
-coverage.xml
+# Ignore local database files
+db.sqlite3
 
-# Migrations
-**/migrations/*.pyc
-**/migrations/__pycache__/
-**/migrations/*.py
-!*/migrations/__init__.py
+# Ignore static files collected by Django
+/staticfiles/
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+
+# Ignore log files
+*.log
+request_logs.txt
+
+# Ignore environment variables
+.env
+# Ignore compiled Python files
+__pycache__/
+*.py[cod]
