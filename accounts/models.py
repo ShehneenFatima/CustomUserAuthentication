@@ -44,9 +44,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.full_name)
+            self.slug = slugify(self.full_name) #If slug is empty automatically generate it from full name
         if not self.auth_token:
-            self.auth_token = str(uuid.uuid4())  # generate a random token
+            self.auth_token = str(uuid.uuid4())  # generate a random token,using uuid4().
         super().save(*args, **kwargs)
 
     def __str__(self):

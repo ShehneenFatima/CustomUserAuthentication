@@ -50,23 +50,22 @@ def logout_view(request):
     return render(request, 'logout.html')
 
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer): #Creating serializer controling how JWT tokens are issued
     @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        # Optionally, add custom claims or fields to the token here
+    def get_token(cls, user):#a method to customize token,adding more fields
+        token = super().get_token(user) #calls the parent class method,generating basic token
         return token
 
-    def validate(self, attrs):
+    def validate(self, attrs): #check if email and password,provided,validate?
         # Overriding to use email instead of username
         email = attrs.get('email')
-        password = attrs.get('password')
+        password = attrs.get('password') #extracting...
 
-        if email and password:
+        if email and password: #check if both are provided?
             try:
-                user = CustomUser.objects.get(email=email)
-                if user.check_password(password):
-                    attrs['user'] = user
+                user = CustomUser.objects.get(email=email) #Trying to find a user in the database based on email (not username).
+                if user.check_password(password): #matches password
+                    attrs['user'] = user #Attaching found user to validated data (attrs)
                 else:
                     raise serializers.ValidationError("Invalid credentials")
             except CustomUser.DoesNotExist:
@@ -74,10 +73,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         else:
             raise serializers.ValidationError("Email and password are required.")
         
-        return attrs
+        return attrs #Return the validated attributes,now attached with the user.
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+class CustomTokenObtainPairView(TokenObtainPairView):#connecting the custom serializer to the view that issues tokens.
+    serializer_class = CustomTokenObtainPairSerializer #When user hits this endpoint, it will use email + password for authentication.
 
     
 
