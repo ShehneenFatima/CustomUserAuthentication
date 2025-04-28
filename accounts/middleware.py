@@ -7,7 +7,7 @@ User = get_user_model()
 
 class CustomAuthMiddleware(MiddlewareMixin): #works with both old and new styles of Django middleware.
     def process_request(self, request): #http request object,can be modified before further processing
-        token = request.META.get('HTTP_AUTHORIZATION')
+        token = request.META.get('HTTP_AUTHORIZATION')#extracts the token string from header
         if token:
             try:
                 user = User.objects.get(auth_token=token)
@@ -36,5 +36,4 @@ class RequestLoggingMiddleware(MiddlewareMixin):  # Inheriting from MiddlewareMi
         method = request.method  # HTTP method (GET, POST, etc.)
         path = request.get_full_path()  # Full path of the URL
         user = request.user if request.user.is_authenticated else 'Anonymous'  # Get user if authenticated
-        # Log the request information
-        logger.info(f'IP: {ip} | Method: {method} | Path: {path} | User: {user}')
+        logger.info(f'IP: {ip} | Method: {method} | Path: {path} | User: {user}')# Log the request information
