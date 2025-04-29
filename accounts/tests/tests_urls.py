@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.urls import reverse
+from django.urls import reverse #helps you get a url from name
 
 class URLTests(TestCase):
     def test_signup_url(self):
