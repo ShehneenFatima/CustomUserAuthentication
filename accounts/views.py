@@ -52,12 +52,14 @@ def logout_view(request):
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer): #Creating serializer controling how JWT tokens are issued
     @classmethod
-    def get_token(cls, user):#a method to customize token,adding more fields
-        token = super().get_token(user) #calls the parent class method,generating basic token
+    def get_token(cls, user):#a method to customize token,adding more fields,get_token=customize tokens
+        token = super().get_token(user) #invokes the parent class .get_token method,to get base jwt token for user
+        # Add custom fields to the token
+        token['email'] = user.email  # Add user's email
         return token
 
     def validate(self, attrs): #check if email and password,provided,validate?
-        # Overriding to use email instead of username
+        # Overriding to use email 
         email = attrs.get('email')
         password = attrs.get('password') #extracting...
 
@@ -78,14 +80,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer): #Creating seri
 class CustomTokenObtainPairView(TokenObtainPairView):#connecting the custom serializer to the view that issues tokens.
     serializer_class = CustomTokenObtainPairSerializer #When user hits this endpoint, it will use email + password for authentication.
 
-    
-
-@api_view(['GET'])  # Decorator that makes the function handle only GET requests
-@permission_classes([IsAuthenticated])  # Only authenticated users can access this view
+@api_view(['GET'])  
+@permission_classes([IsAuthenticated])  
 def protected_view(request):
     context = {
         'message': f'Hello {request.user.email}, you accessed a protected view!'
     }
-    return Response(context)  # This will return a JSON response
+    # Returning the response
+    return Response(context)
 
-    
