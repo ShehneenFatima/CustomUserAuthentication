@@ -3,24 +3,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils.text import slugify
+import uuid  # for generating tokens
+from django.utils import timezone
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        """
-        Creates and returns a regular user with an email and password.
-        """
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)  # Ensure the password is hashed
+        user.set_password(password)  # Password hashing
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        """
-        Creates and returns a superuser with an email, password, and permissions.
-        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -31,11 +28,12 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    auth_token = models.CharField(max_length=255, unique=True, blank=True)  # Token field added
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -46,7 +44,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.full_name)  # Ensure slug is generated from full_name
+            self.slug = slugify(self.full_name) #If slug is empty automatically generate it from full name
+        if not self.auth_token:
+            self.auth_token = str(uuid.uuid4())  # generate a random token,using uuid4().
         super().save(*args, **kwargs)
 
     def __str__(self):
